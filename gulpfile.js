@@ -2,6 +2,7 @@ var gulp=require('gulp');
 	sass=require('gulp-sass');
 	browserSync=require('browser-sync').create();
 	autoprefixer=require('gulp-autoprefixer');
+	clean=require('gulp-clean');
 
 
 
@@ -23,7 +24,13 @@ var apppath={
 
 //gulp task
 
-gulp.task('copy', function(){
+gulp.task('clean-html', function(){
+	return gulp.src(apppath.root +'*.html', {read:false, force:true})
+				.pipe(clean())
+				
+});
+
+gulp.task('copy', ['clean-html'], function(){
 	gulp.src(sourcepath.html)
 		.pipe(gulp.dest(apppath.root));
 })
