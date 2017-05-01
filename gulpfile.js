@@ -1,8 +1,9 @@
-var gulp=require('gulp');
-	sass=require('gulp-sass');
-	browserSync=require('browser-sync').create();
-	autoprefixer=require('gulp-autoprefixer');
-	clean=require('gulp-clean');
+var gulp=require('gulp'),
+	sass=require('gulp-sass'),
+	browserSync=require('browser-sync').create(),
+	autoprefixer=require('gulp-autoprefixer'),
+	clean=require('gulp-clean'),
+	concat=require('gulp-concat');
 
 
 
@@ -58,6 +59,7 @@ gulp.task('sass',['clean-css'],  function(){
 
 gulp.task('scripts', ['clean-js'], function(){
 	return gulp.src(sourcepath.js)
+				.pipe(concat('main.js'))
 				.pipe(gulp.dest(apppath.js))
 
 });
