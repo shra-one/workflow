@@ -3,7 +3,9 @@ var gulp=require('gulp'),
 	browserSync=require('browser-sync').create(),
 	autoprefixer=require('gulp-autoprefixer'),
 	clean=require('gulp-clean'),
-	concat=require('gulp-concat');
+	concat=require('gulp-concat'),
+	browserify=require('gulp-browserify'),
+	merge=require('merge-stream');
 
 
 
@@ -46,7 +48,10 @@ gulp.task('copy', ['clean-html'], function(){
 		.pipe(gulp.dest(apppath.root));
 })
 gulp.task('sass',['clean-css'],  function(){
-	return gulp
+
+	var bootstrapfiles=gulp.src('node_modules/bootstrap/dist/css/bootstrap.css');
+	var sassfiles;
+	sassfiles= gulp
 			.src(sourcepath.sass)
 			.pipe(autoprefixer())
 			.pipe(sass({
@@ -54,12 +59,15 @@ gulp.task('sass',['clean-css'],  function(){
 				})
 				.on('error', sass.logError)
 				)
+			return merge(bootstrapfiles, sassfiles)
+			.pipe(concat('main.css'))
 			.pipe(gulp.dest(apppath.css))
 });
 
 gulp.task('scripts', ['clean-js'], function(){
 	return gulp.src(sourcepath.js)
 				.pipe(concat('main.js'))
+				.pipe(browserify())
 				.pipe(gulp.dest(apppath.js))
 
 });
